@@ -5,6 +5,8 @@ This code will run an app with that modify the .ini files to update the informat
 
 Notice you may change the paths and place the paths to your Rainmeter Skins .ini files. It's usually on "C:\Users\#USER#\Documents\Rainmeter\Skins" then "\Ageo\Time" and Date(Big Number,Month and Day) for the Time and Date skin and "\Minimalist 2\System" for the system info(RAM and CPU percentages of use and Free Space in Disk).
 
+Also download the "app.py" file so the main "Modify_Rainmeter" may run
+
 To create an app .exe using the VSCode or other IDE use "pip install pyinstaller" command then use "pyinstaller --onefile --noconsole Modify_Rainmeter.py"
 
 Images and screenshots below
