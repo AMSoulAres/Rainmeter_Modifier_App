@@ -3,4 +3,6 @@ App to modify "Ageo - Time and Date" and "Minimalist 2 - System" skins in Rainme
 
 This code will run an app with that modify the .ini files to update the information, there's color selecting for the Day's Number and the System info individually and the Month and Week Day font color are changed together.
 
-Notice you may change the paths and place the paths to your Rainmeter Skins .ini files. It's usually on "C:\Users\#USER#\Documents\Rainmeter\Skins" then "\Ageo\Time" and Date(Big Number,Month and Day) for the Time and Date skin and "\Minimalist 2\System" for the system info(RAM and CPU percentages of use and Free Space in Disk). 
+Notice you may change the paths and place the paths to your Rainmeter Skins .ini files. It's usually on "C:\Users\#USER#\Documents\Rainmeter\Skins" then "\Ageo\Time" and Date(Big Number,Month and Day) for the Time and Date skin and "\Minimalist 2\System" for the system info(RAM and CPU percentages of use and Free Space in Disk).
+
+To create an app .exe using the VSCode or other IDE use "pip install pyinstaller" command then use "pyinstaller --onefile --noconsole Modify_Rainmeter.py"
