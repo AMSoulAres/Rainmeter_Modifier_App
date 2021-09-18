@@ -249,7 +249,7 @@ class FontSelectorWindow(QMainWindow, object):
         self.icon = QtGui.QIcon(
             r'Color_Wheel.png')
         self.setWindowIcon(self.icon)
-        self.setWindowTitle('Set Gradient')
+        self.setWindowTitle('Change Font')
         self.setFixedSize(400, 200)
         self.setStyleSheet(
             "background-color: QLinearGradient(x1:0, y1:0 , x2:0, y2:2, stop:0 #21002c, stop:1 #000000)")
