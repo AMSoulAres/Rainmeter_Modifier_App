@@ -10,5 +10,3 @@ Both .ini files are changed so you have to substitute it in the folders. Link to
 Also download the "app.py" file so the main "Modify_Rainmeter" may run
 
 To create an app .exe using the VSCode or other IDE use "pip install pyinstaller" command then use "pyinstaller --onefile --noconsole Modify_Rainmeter.py"
-
-Images and screenshots below
