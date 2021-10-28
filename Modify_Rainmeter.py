@@ -1,19 +1,20 @@
 import sys
 import os
 import time
-from PyQt5.QtWidgets import QApplication, QGridLayout, QMainWindow
+from PyQt5.QtWidgets import QApplication, QGridLayout, QFileDialog, QMainWindow
 from PyQt5.QtWidgets import QColorDialog, QPushButton, QWidget
 from PyQt5.QtWidgets import QLineEdit, QSizePolicy, QFontDialog
 from PyQt5 import QtGui
+from PyQt5.QtCore import QSettings
 # Function made separated from the main app
 from app import modify_files
 
 # Put your path to the skins in here
-path_to_date = r'C:\Users\henri\Documents\Rainmeter\Skins\Ageo\Time and Date\Time and Date.ini'
-path_to_system = r'C:/Users/henri\Documents/Rainmeter/Skins/Minimalist 2/System/System.ini'
 
 
 # Main Window config
+
+
 class ColorWheel(QMainWindow, object):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -21,7 +22,7 @@ class ColorWheel(QMainWindow, object):
         self.grid = QGridLayout(self.cw)
         self.setLayout(self.grid)
         self.icon = QtGui.QIcon(
-            r'Color_Wheel.png')
+            r'Rainmeter_Code\\Principal\\Color_Wheel.png')
         self.setWindowIcon(self.icon)
         self.setWindowTitle('Color')
         self.setFixedSize(600, 300)
@@ -30,6 +31,7 @@ class ColorWheel(QMainWindow, object):
 
         self.grid.setVerticalSpacing(1)
         self.grid.setContentsMargins(0, 15, 0, 0)
+
 
 # Display where the rgb coordinates are reinformed
 
@@ -46,7 +48,28 @@ class ColorWheel(QMainWindow, object):
             self.display.sizePolicy().hasHeightForWidth())
         self.display.setSizePolicy(sizePolicy)
 
-# Buttons in the Main Window
+        # Buttons in the Main Window
+        self.btn = QPushButton('Open Folder Selection')
+        self.btn.setStyleSheet(
+            "QPushButton{"
+            "border: 2px solid black; font-size: 20px;"
+            "background-color: QLinearGradient(x1:0, y1:0 , x2:0, y2:1.5, stop:0 #39004d, stop:1 #000000);"
+            "color: #f2f2f2;"
+            "border-radius: 2px;"
+            "}"
+            "QPushButton:hover {"
+            "background-color: QLinearGradient(x1:0, y1:0 , x2:0, y2:1.5, stop:0 #5e0080, stop:1 #000000);"
+            "color: #fff;"
+            "}"
+            "QPushButton:pressed {"
+            "background-color: QLinearGradient(x1:0, y1:0 , x2:0, y2:1.5, stop:0 #4b0066, stop:1 #000000);"
+            "color: #cccccc;"
+            "}"
+        )
+        self.grid.addWidget(self.btn, 2, 3, 2, 4)
+        self.btn.clicked.connect(self.SetupWindow)
+
+    # Buttons in the Main Window
         self.btn = QPushButton('Color Selection')
         self.btn.setStyleSheet(
             "QPushButton{"
@@ -191,27 +214,19 @@ class ColorWheel(QMainWindow, object):
 
 # Paths in my computer
     def path_selector_TD(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         self.section = 'Color2'
         self.modifier()
 
     def path_selector_System(self):
-        self.path = path_to_system
+        self.path = Setup.path_to_system
         self.section = 'Color2'
         self.modifier()
 
     def font_selection_TD(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         self.section = 'Color1'
         self.modifier()
-
-# This method calls the "subclass" to open other window
-    def set_gradient(self, checked):
-        self.w = GradientSelectorWindow()
-        self.w.show()
-        modify_files(path_to_date,
-                     'MeterDate', 'inlinesetting', 'GradientColor | #Direction# | #Color2# ; 0.0 | #Color3# ; 1.0')
-
 
 # Method to apply the configurations
 
@@ -232,22 +247,76 @@ class ColorWheel(QMainWindow, object):
 
             print(e)
 
-        # Method to open second window
+
+# Method to open second window for gradient selection
 
     def font_selctor(self):
         self.wf = FontSelectorWindow()
         self.wf.show()
 
+# This method calls the "subclass" to open other window
+    def set_gradient(self):
+        self.w = GradientSelectorWindow()
+        self.w.show()
+        modify_files(Setup.path_to_date,
+                     'MeterDate', 'inlinesetting', 'GradientColor | #Direction# | #Color2# ; 0.0 | #Color3# ; 1.0')
+
+# This method opens a folder selection window
+    def SetupWindow(self):
+        self.Setup = Setup()
+        self.Setup.show()
+
+
+class Setup(QMainWindow, object):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.getSettingValues()
+
+        Setup.path_to_date = self.setting_paths.value('path_to_date')
+        Setup.path_to_system = self.setting_paths.value('path_to_system')
+        self.cw = QWidget()
+        self.grid = QGridLayout(self.cw)
+        self.icon = QtGui.QIcon(r'Rainmeter_Code\Principal\Color_Wheel.png')
+        self.setWindowIcon(self.icon)
+        self.setWindowTitle('First Time Huh?')
+        self.setFixedSize(350, 100)
+
+        self.btnDir = QPushButton('Open Folders')
+        self.grid.addWidget(self.btnDir, 1, 1, 1, 1)
+        self.btnDir.clicked.connect(self.getDirectory)
+
+        self.setCentralWidget(self.cw)
+
+# Folder Location Setup
+
+    def getSettingValues(self):
+        self.setting_paths = QSettings('Modify Rainmeter', 'Path')
+
+    def getDirectory(self):
+        response = QFileDialog.getExistingDirectory(
+            self,
+            caption="Select Folder"
+        )
+
+        updated_path_to_date = str(
+            response)+r'\Skins\Ageo\Time and Date\Time and Date.ini'
+
+        updated_path_to_system = str(
+            response) + r'\Skins\Minimalist 2\System\System.ini'
+
+        self.setting_paths.setValue('path_to_date', updated_path_to_date)
+        self.setting_paths.setValue(
+            'path_to_system', updated_path_to_system)
+
+
 # "Subclass" to open another window
-
-
-class FontSelectorWindow(QMainWindow, object):
+class FontSelectorWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.cw = QWidget()
         self.grid = QGridLayout(self.cw)
         self.icon = QtGui.QIcon(
-            r'Color_Wheel.png')
+            r'Rainmeter_Code\Principal\Color_Wheel.png')
         self.setWindowIcon(self.icon)
         self.setWindowTitle('Change Font')
         self.setFixedSize(400, 200)
@@ -325,7 +394,7 @@ class FontSelectorWindow(QMainWindow, object):
             self.selectedfontM = font.toString()[0:-28].replace(',', '')
 
         try:
-            modify_files(path_to_date,
+            modify_files(Setup.path_to_date,
                          'Variables',
                          'font2', self.selectedfontM)
             time.sleep(0.2)
@@ -344,7 +413,7 @@ class FontSelectorWindow(QMainWindow, object):
             self.selectedfontD = font.toString()[0:-27].replace(',', '')
 
         try:
-            modify_files(path_to_date,
+            modify_files(Setup.path_to_date,
                          'Variables',
                          'font1', self.selectedfontD)
             time.sleep(0.2)
@@ -363,7 +432,7 @@ class FontSelectorWindow(QMainWindow, object):
             self.selectedfontS = font.toString()[0:-27].replace(',', '')
 
         try:
-            modify_files(path_to_system,
+            modify_files(Setup.path_to_system,
                          'Variables',
                          'font1', self.selectedfontS)
             time.sleep(0.2)
@@ -383,7 +452,7 @@ class GradientSelectorWindow(QMainWindow, object):
         self.cw = QWidget()
         self.grid = QGridLayout(self.cw)
         self.icon = QtGui.QIcon(
-            r'Color_Wheel.png')
+            r'Rainmeter_Code\Principal\Color_Wheel.png')
         self.setWindowIcon(self.icon)
         self.setWindowTitle('Set Gradient')
         self.setFixedSize(400, 200)
@@ -518,35 +587,35 @@ class GradientSelectorWindow(QMainWindow, object):
         self.color = QColorDialog.getColor()
         self.selected_rgb = str(QtGui.QColor.getRgb(
             self.color))[:-6].replace('(', '')
-        modify_files(path_to_date,
+        modify_files(Setup.path_to_date,
                      'Variables', 'Color3', self.selected_rgb)
 
     def top_to_bottom(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         modify_files(self.path, 'Variables', 'Direction', '270')
         os.system(
             'cmd /c "C:/Program Files/Rainmeter/Rainmeter.exe" !RefreshApp')
 
     def bottom_to_top(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         modify_files(self.path, 'Variables', 'Direction', '90')
         os.system(
             'cmd /c "C:/Program Files/Rainmeter/Rainmeter.exe" !RefreshApp')
 
     def left_to_right(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         modify_files(self.path, 'Variables', 'Direction', '180')
         os.system(
             'cmd /c "C:/Program Files/Rainmeter/Rainmeter.exe" !RefreshApp')
 
     def right_to_left(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         modify_files(self.path, 'Variables', 'Direction', '0')
         os.system(
             'cmd /c "C:/Program Files/Rainmeter/Rainmeter.exe" !RefreshApp')
 
     def no_grad(self):
-        self.path = path_to_date
+        self.path = Setup.path_to_date
         modify_files(self.path, 'MeterDate', 'inlinesetting', '')
         os.system(
             'cmd /c "C:/Program Files/Rainmeter/Rainmeter.exe" !RefreshApp')
