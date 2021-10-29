@@ -10,3 +10,4 @@ Both .ini files are changed so you have to substitute it in the folders for the 
 Link to install rainmeter https://www.rainmeter.net
 
 Link to download the Rainmeter Modifier https://drive.google.com/file/d/1BSGeqra9LBUgu_FBtsd3U2FQxl648Rip/view?usp=sharing
+(Don't download more than one .exe of Rainmeter Modifier, it may cause path conflict.)
