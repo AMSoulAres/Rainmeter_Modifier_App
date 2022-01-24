@@ -3,6 +3,8 @@ App to modify "Ageo - Time and Date" and "Minimalist 2 - System" skins in Rainme
 
 The app will modify the .ini files to update the information, there's color selecting to change the color of the number, month , day and the system specs. You can also change the font of each one and set a gradient for the color. (Look at the screenshots)
 
+It will probably appear some generic, or none at all, font when you start it for the first time, just change it to one you have installed.
+
 Notice you may select the folder when the app runs for the first time. It's usually on "C:\Users\#USER#\Documents\Rainmeter" selecting this folder is enough for the program.
 
 Both .ini files are changed so you have to substitute it in the folders for the ones in here. Again, it's usually in "C:\Users\#USER#\Documents\Rainmeter\Skins" but for each skin will have a separate locale so "\Ageo\Time and Date"(Big Number,Month and Day) for the Time and Date skin and "\Minimalist 2\System" for the system info(RAM and CPU percentages of use and Free Space in Disk). Link to install skins in rainmeter https://www.deviantart.com/apexxx-sensei/art/Ageo-788359446, the system one is default in rainmeter.
